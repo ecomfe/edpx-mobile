@@ -1,0 +1,20 @@
+{
+    "name": "edpx-mobile",
+    "description": "EDP extension for Mobile project.",
+    "version": "0.0.1-alpha.1",
+    "contributors": [
+        { "name": "firede", "email": "firede@firede.us" }
+    ],
+    "dependencies": {
+        "edp-package": "~0.4.6",
+        "edp-project": "~0.4.24",
+        "edp-webserver": "~0.4.10",
+        "handlebars": "~1.0",
+        "semver": "~2.1.0"
+    },
+    "scripts": {
+        "install": "edp extension add ./lib",
+        "preinstall": "edp extension remove ./lib"
+    },
+    "repository": "git://github.com/ecomfe/edpx-mobile"
+}
