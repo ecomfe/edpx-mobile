@@ -6,7 +6,7 @@
         { "name": "firede", "email": "firede@firede.us" }
     ],
     "dependencies": {
-        "chalk": "~0.3.0",
+        "chalk": "~0.4.0",
         "msee": "~0.1.0",
         "edp-webserver": "~0.4.12"
     },
