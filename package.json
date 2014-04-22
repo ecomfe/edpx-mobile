@@ -14,17 +14,12 @@
   ],
   "dependencies": {
     "chalk": "~0.4.0",
-    "msee": "~0.1.0",
-    "edp-webserver": "~0.4.12",
     "edp-core": "~1.0.25",
-    "edp-project": "~0.5.1"
-  },
-  "peerDependencies": {
-    "edp": "~0.6.8-beta.15"
-  },
-  "scripts": {
-    "install": "edp extension add ./lib",
-    "preinstall": "edp extension remove ./lib"
+    "edp-package": "^0.4.15",
+    "edp-project": "~0.5.1",
+    "edp-webserver": "~0.4.12",
+    "msee": "~0.1.0",
+    "sprintf": "^0.1.3"
   },
   "bin": {
     "edpm": "./bin/edpm"
