@@ -1,0 +1,23 @@
+// jshint config for ecomfe
+// detail info see: http://www.jshint.com/docs/
+{
+    "curly":    true,
+    "forin":    true,
+    "eqeqeq":   false,
+    "unused":   true,
+    "eqnull":   true,
+    "maxlen":   80,
+    "boss":     true,
+    "multistr": false,
+    "proto":    true,
+    "shadow":   true,
+    "sub":      true,
+    "undef":    true,
+    "laxbreak": true,
+    "devel":    true,
+
+    "node": true,
+    "strict":   false
+}
+
+/* vim: set ft=javascript : */
