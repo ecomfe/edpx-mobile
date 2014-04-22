@@ -1,10 +1,7 @@
 /**
- * @file mobile
+ * @file main command
  * @author treelite(c.xinle@gmail.com)
  */
-
-var metadata = require('../lib/metadata');
-var log = require('edp-core').log;
 
 /**
  * 命令行配置相
@@ -27,13 +24,16 @@ cli.description = '移动脚手架';
  * @public
  */
 cli.main = function () {
+    var metadata = require('../lib/metadata');
+    var log = require('edp-core').log;
     var theme = metadata.get('theme');
 
     if (!theme) {
         log.info('not in mobile project dir');
+        log.info('use `edp mobile init [theme]` to init mobile project');
     }
     else {
-        log.info('current project\'s theme is' + theme);
+        log.info('current project\'s theme is ' + theme);
     }
 };
 
