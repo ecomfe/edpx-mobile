@@ -19,6 +19,7 @@
     "edp-package": "^0.4.15",
     "edp-project": "~0.5.1",
     "edp-webserver": "~0.4.12",
+    "mkdirp": "^0.4.0",
     "msee": "~0.1.0",
     "sprintf": "^0.1.3"
   },
