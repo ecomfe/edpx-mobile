@@ -27,7 +27,7 @@ cli.main = function () {
     var metadata = require('../lib/metadata');
     var core = require('edp-core');
     var log = core.log;
-    var uitl = core.util;
+    var util = core.util;
     var theme = metadata.get('theme');
 
     if (!theme) {
