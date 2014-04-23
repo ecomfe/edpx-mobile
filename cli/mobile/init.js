@@ -11,30 +11,6 @@
  */
 var LOG_PERFIX = '[edp mobile init] ';
 
-var themes = require('../../lib/themes');
-
-/**
- * 列出所有支持的项目主题
- *
- * @inner
- */
-function listAllThemes() {
-    var list = themes.list();
-    var sprintf = require('sprintf').sprintf;
-    var util = require('edp-core').util;
-
-    console.log('Current Supported Themes:');
-    list.forEach(function (item) {
-        console.log(
-            sprintf(
-                '  %-20s %s', 
-                util.colorize(item.name, 'success'), 
-                item.describe
-            )
-        );
-    });
-}
-
 /**
  * 命令行配置相
  *
@@ -58,17 +34,18 @@ cli.description = '初始化移动项目';
  */
 cli.main = function (args) {
     var log = require('edp-core').log;
+    var themes = require('../../lib/themes');
 
     if (args.length <= 0) {
-        log.error(LOG_PERFIX + 'please input the theme name');
-        listAllThemes();
+        log.error(LOG_PERFIX + 'Please input the theme name');
+        themes.printList();
         return;
     }
 
     var theme = themes.get(args[0]);
     if (!theme) {
-        log.error(LOG_PERFIX + 'incorrect theme name');
-        listAllThemes();
+        log.error(LOG_PERFIX + 'Incorrect theme name');
+        themes.printList();
         return;
     }
 
