@@ -14,6 +14,7 @@
   ],
   "dependencies": {
     "chalk": "~0.4.0",
+    "edp-config": "^1.0.2",
     "edp-core": "~1.0.25",
     "edp-package": "^0.4.15",
     "edp-project": "~0.5.1",
