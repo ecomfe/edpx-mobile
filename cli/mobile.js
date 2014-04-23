@@ -25,7 +25,9 @@ cli.description = '移动脚手架';
  */
 cli.main = function () {
     var metadata = require('../lib/metadata');
-    var log = require('edp-core').log;
+    var core = require('edp-core');
+    var log = core.log;
+    var uitl = core.util;
     var theme = metadata.get('theme');
 
     if (!theme) {
@@ -33,7 +35,7 @@ cli.main = function () {
         log.info('use `edp mobile init [theme]` to init mobile project');
     }
     else {
-        log.info('current project\'s theme is ' + theme);
+        log.info('current project\'s theme is ' + util.colorize(theme, 'success'));
     }
 };
 
