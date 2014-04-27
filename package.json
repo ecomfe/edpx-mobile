@@ -1,7 +1,7 @@
 {
   "name": "edpx-mobile",
   "description": "EDP extension for Mobile project.",
-  "version": "0.0.1-alpha.1",
+  "version": "0.0.1-alpha.2",
   "contributors": [
     {
       "name": "firede",
@@ -21,7 +21,7 @@
     "edp-core": "~1.0.25",
     "edp-package": "^0.4.15",
     "edp-project": "~0.5.1",
-    "edp-webserver": "~0.4.12",
+    "edp-webserver": "~1.0.7",
     "mkdirp": "^0.4.0",
     "sprintf": "^0.1.3"
   },
