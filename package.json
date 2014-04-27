@@ -10,17 +10,19 @@
     {
       "name": "treelite",
       "email": "c.xinle@gmail.com"
+    },
+    {
+      "name": "junmer",
+      "email": "junmer@foxmail.com"
     }
   ],
   "dependencies": {
-    "chalk": "~0.4.0",
     "edp-config": "^1.0.2",
     "edp-core": "~1.0.25",
     "edp-package": "^0.4.15",
     "edp-project": "~0.5.1",
     "edp-webserver": "~0.4.12",
     "mkdirp": "^0.4.0",
-    "msee": "~0.1.0",
     "sprintf": "^0.1.3"
   },
   "bin": {
