@@ -46,4 +46,4 @@ exports.getLocations = function () {
 
 ## Reference
 
-    edp help webserver
+    edp webserver --help

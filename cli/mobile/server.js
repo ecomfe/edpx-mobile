@@ -1,11 +1,14 @@
 /**
  * @file 调试服务器模块入口
  * @author firede[firede@firede.us]
+ *         junmer(junmer@foxmail.com)
  */
 
-var log = require( '../log' );
 var path = require( 'path' );
 var fs = require( 'fs' );
+
+var extend = require( 'edp-core' ).util.extend;
+var log = require( 'edp-core' ).log;
 
 /**
  * 命令行配置项
@@ -14,13 +17,6 @@ var fs = require( 'fs' );
  * @type {Object}
  */
 var cli = {};
-
-/**
- * 命令名称
- * 
- * @type {string}
- */
-cli.command = 'server';
 
 /**
  * 命令描述信息
@@ -55,6 +51,7 @@ var DEFAULT_CONF_FILE = 'edp-webserver-config.js';
  * @param {Object.<string, string>} opts 命令可选参数
  */
 cli.main = function ( args, opts ) {
+
     var port = opts.port;
     var docRoot = opts[ 'document-root' ];
     var conf = opts.config;
@@ -76,12 +73,29 @@ cli.main = function ( args, opts ) {
 
     // 注入扩展资源处理器
     if ( conf.injectResource ) {
-        var resPath = path.resolve( __dirname, '../server' );
+        var resPath = path.resolve( __dirname, '../../lib/server' );
         conf.injectResource( getExtraResource( resPath ) );
     }
 
+
+    var isInstalled = require( '../../lib/util/isInstalled' );
+
+    if (!isInstalled('weinre')) {
+
+        log.error(
+            '%s 启动失败，首次使用请用以下命令安装：\n    %s',
+            'Weinre',
+            'npm install -g weinre'
+        );
+
+        return;
+    }
+
+
     var server = require( 'edp-webserver' );
+
     server.start( conf );
+
 
 };
 
@@ -97,7 +111,7 @@ function getExtraResource( resPath ) {
 
     files.forEach( function( file ) {
         var filePath = path.resolve( resPath, file );
-        require( '../util/extend' )( res, require( filePath ) );
+        extend( res, require( filePath ) );
     });
 
     return res;
