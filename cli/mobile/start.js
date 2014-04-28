@@ -45,6 +45,21 @@ cli.options = [
  */
 cli.main = function ( args, opts ) {
 
+    // 多命令 使用默认配置
+    
+    var cmds = ['server', 'watch'];
+    var isDefaultConfig = cmds.filter(function (cmd) {
+        return args.indexOf(cmd) > -1;
+    }).length > 1;
+
+    if( isDefaultConfig ) {
+        startServer([], opts);
+        spawn('edp watch', []);
+        return;
+    }
+
+    // 单命令 分别处理
+    
     var cmd = args[0];
     var argv = args.slice(1);
 
@@ -55,10 +70,13 @@ cli.main = function ( args, opts ) {
         spawn('edp watch', argv, opts);
     }
     else {
-        spawn('edp mobile start -h');
+        startServer([], opts);
+        spawn('edp watch', []);
     }
 
 };
+
+
 
 /**
  * 启动server
