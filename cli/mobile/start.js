@@ -54,7 +54,7 @@ cli.main = function ( args, opts ) {
 
     if( isDefaultConfig ) {
         startServer([], opts);
-        spawn('edp watch', []);
+        spawn('edp', ['watch']);
         return;
     }
 
@@ -67,11 +67,11 @@ cli.main = function ( args, opts ) {
         startServer(argv, opts);
     } 
     else if (cmd === 'watch') {
-        spawn('edp watch', argv, opts);
+        spawn('edp', args);
     }
     else {
-        startServer([], opts);
-        spawn('edp watch', []);
+        startServer(argv, opts);
+        spawn('edp', ['watch']);
     }
 
 };
@@ -88,22 +88,29 @@ function startServer(args, opts) {
 
     var isInstalled = require( '../../lib/util/isInstalled' );
 
-    if (!isInstalled('weinre')) {
+    var pkg = 'weinre';
 
-        log.error(
-            '%s 启动失败，首次使用请用以下命令安装：\n    %s',
-            'Weinre',
-            'npm install -g weinre'
-        );
+    isInstalled(pkg).then(
+        server,
+        function () {
+            require('edp-core').pkg.install(pkg).then(server);
+        }
+    );
 
-        return;
+    /**
+     * 开始
+     */
+    function server() {
+
+        var conf = gerServerConfig(opts);
+
+        var server = require('edp-webserver');
+
+        server.start(conf);
+
     }
 
-    var conf = gerServerConfig(opts);
 
-    var server = require( 'edp-webserver' );
-
-    server.start( conf );
 }
 
 /**
