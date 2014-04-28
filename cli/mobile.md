@@ -8,6 +8,7 @@
 
 
 + init      初始化项目
-+ start    调试服务器
++ add       添加模块
++ start     启动调试服务器
 
-See "edpm help <command>" for more information.
+See "edpm <command> --help" for more information.
