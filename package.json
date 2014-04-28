@@ -1,24 +1,32 @@
 {
-    "name": "edpx-mobile",
-    "description": "EDP extension for Mobile project.",
-    "version": "0.0.1-alpha.1",
-    "contributors": [
-        { "name": "firede", "email": "firede@firede.us" }
-    ],
-    "dependencies": {
-        "chalk": "~0.4.0",
-        "msee": "~0.1.0",
-        "edp-webserver": "~0.4.12"
+  "name": "edpx-mobile",
+  "description": "EDP extension for Mobile project.",
+  "version": "0.0.1-alpha.2",
+  "contributors": [
+    {
+      "name": "firede",
+      "email": "firede@firede.us"
     },
-    "peerDependencies": {
-        "edp": "~0.6.8-beta.15"
+    {
+      "name": "treelite",
+      "email": "c.xinle@gmail.com"
     },
-    "scripts": {
-        "install": "edp extension add ./lib",
-        "preinstall": "edp extension remove ./lib"
-    },
-    "bin": {
-        "edpm": "./bin/edpm"
-    },
-    "repository": "git://github.com/ecomfe/edpx-mobile"
+    {
+      "name": "junmer",
+      "email": "junmer@foxmail.com"
+    }
+  ],
+  "dependencies": {
+    "edp-config": "^1.0.2",
+    "edp-core": "~1.0.25",
+    "edp-package": "^0.4.15",
+    "edp-project": "~0.5.1",
+    "edp-webserver": "~1.0.7",
+    "mkdirp": "^0.4.0",
+    "sprintf": "^0.1.3"
+  },
+  "bin": {
+    "edpm": "./bin/edpm"
+  },
+  "repository": "git://github.com/ecomfe/edpx-mobile"
 }

@@ -1,5 +1,7 @@
 #!/usr/bin/env node
 
-var cli = require( '../lib/cli' );
+var spawn = require( '../lib/util/spawn' );
 
-cli.execute( process.argv );
+var argv = process.argv.slice(2);
+
+spawn( 'edp mobile', argv );
