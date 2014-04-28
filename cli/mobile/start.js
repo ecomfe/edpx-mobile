@@ -1,5 +1,5 @@
 /**
- * @file 调试服务器模块入口
+ * @file 调试模块入口
  * @author firede[firede@firede.us]
  *         junmer(junmer@foxmail.com)
  */
@@ -9,6 +9,7 @@ var fs = require( 'fs' );
 
 var extend = require( 'edp-core' ).util.extend;
 var log = require( 'edp-core' ).log;
+var spawn = require( '../../lib/util/spawn' );
 
 /**
  * 命令行配置项
@@ -23,7 +24,7 @@ var cli = {};
  * 
  * @type {string}
  */
-cli.description = '调试服务器';
+cli.description = '启动调试';
 
 /**
  * 命令选项信息
@@ -32,17 +33,9 @@ cli.description = '调试服务器';
  */
 cli.options = [
     'port:',
-    'config:',
-    'document-root:'
+    'document-root:',
+    'config:'
 ];
-
-/**
- * 默认配置文件名
- * 
- * @const
- * @type {string}
- */
-var DEFAULT_CONF_FILE = 'edp-webserver-config.js';
 
 /**
  * 模块执行入口
@@ -51,6 +44,57 @@ var DEFAULT_CONF_FILE = 'edp-webserver-config.js';
  * @param {Object.<string, string>} opts 命令可选参数
  */
 cli.main = function ( args, opts ) {
+
+    var cmd = args[0];
+    var argv = args.slice(1);
+
+    if (cmd === 'server') {
+        startServer(argv, opts);
+    } 
+    else if (cmd === 'watch') {
+        spawn('edp watch', argv, opts);
+    }
+    else {
+        spawn('edp mobile start -h');
+    }
+
+};
+
+/**
+ * 启动server
+ * 
+ * @param {Array.<string>} args 命令行参数
+ * @param {Object.<string, string>} opts 命令可选参数
+ */
+function startServer(args, opts) {
+
+    var isInstalled = require( '../../lib/util/isInstalled' );
+
+    if (!isInstalled('weinre')) {
+
+        log.error(
+            '%s 启动失败，首次使用请用以下命令安装：\n    %s',
+            'Weinre',
+            'npm install -g weinre'
+        );
+
+        return;
+    }
+
+    var conf = gerServerConfig(opts);
+
+    var server = require( 'edp-webserver' );
+
+    server.start( conf );
+}
+
+/**
+ * 获取webserver 配置
+ * 
+ * @param {Object} opts cli配置
+ * @return {Object}
+ */
+function gerServerConfig(opts) {
 
     var port = opts.port;
     var docRoot = opts[ 'document-root' ];
@@ -77,27 +121,8 @@ cli.main = function ( args, opts ) {
         conf.injectResource( getExtraResource( resPath ) );
     }
 
-
-    var isInstalled = require( '../../lib/util/isInstalled' );
-
-    if (!isInstalled('weinre')) {
-
-        log.error(
-            '%s 启动失败，首次使用请用以下命令安装：\n    %s',
-            'Weinre',
-            'npm install -g weinre'
-        );
-
-        return;
-    }
-
-
-    var server = require( 'edp-webserver' );
-
-    server.start( conf );
-
-
-};
+    return conf;
+}
 
 /**
  * 获取扩展资源处理器
@@ -126,6 +151,8 @@ function getExtraResource( resPath ) {
  */
 function loadConf( confFile ) {
     var cwd = process.cwd();
+
+    var DEFAULT_CONF_FILE = 'edp-webserver-config.js';
 
     if ( confFile ) {
         confFile = path.resolve( cwd, confFile );

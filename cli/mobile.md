@@ -8,6 +8,6 @@
 
 
 + init      初始化项目
-+ server    调试服务器
++ start    调试服务器
 
 See "edpm help <command>" for more information.
