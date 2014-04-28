@@ -2,6 +2,6 @@
 
 var spawn = require( '../lib/util/spawn' );
 
-var argv = process.argv.slice(2);
+var argv = process.argv.slice(1);
 
-spawn( 'edp mobile', argv );
+spawn( 'edp', argv );
