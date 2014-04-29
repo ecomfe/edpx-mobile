@@ -2,10 +2,12 @@
   "name": "edpx-mobile",
   "description": "EDP extension for Mobile project.",
   "version": "0.1.0",
-  "maintainers": {
-    "name": "junmer",
-    "email": "junmer@foxmail.com"
-  },
+  "maintainers": [
+    {
+      "name": "junmer",
+      "email": "junmer@foxmail.com"
+    }
+  ],
   "contributors": [
     {
       "name": "firede",
