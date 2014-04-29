@@ -25,7 +25,7 @@
     "edp-core": "~1.0.25",
     "edp-package": "^0.4.15",
     "edp-project": "~0.5.1",
-    "edp-webserver": "~1.0.7",
+    "edp-webserver": "^1.0.8",
     "mkdirp": "^0.4.0",
     "sprintf": "^0.1.3"
   },
