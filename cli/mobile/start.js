@@ -48,11 +48,11 @@ cli.main = function ( args, opts ) {
     // 多命令 使用默认配置
     
     var cmds = ['server', 'watch'];
-    var isDefaultConfig = cmds.filter(function (cmd) {
+    var userCmds = cmds.filter(function (cmd) {
         return args.indexOf(cmd) > -1;
-    }).length > 1;
+    }).length;
 
-    if( isDefaultConfig ) {
+    if( userCmds > 1 || userCmds === 0 ) {
         startServer([], opts);
         spawn('edp', ['watch']);
         return;
@@ -69,14 +69,8 @@ cli.main = function ( args, opts ) {
     else if (cmd === 'watch') {
         spawn('edp', args);
     }
-    else {
-        startServer(argv, opts);
-        spawn('edp', ['watch']);
-    }
 
 };
-
-
 
 /**
  * 启动server
@@ -91,27 +85,26 @@ function startServer(args, opts) {
     var pkg = 'weinre';
 
     isInstalled(pkg).then(
-        server,
+        startWs,
         function () {
-            require('edp-core').pkg.install(pkg).then(server);
+            require('edp-core').pkg.install(pkg).then(
+                startWs, 
+                function() {
+                    log.error(pkg + '安装失败, 请重试或手动安装：\n npm install -g '+ pkg);
+                }
+            );
         }
     );
 
     /**
      * 开始
      */
-    function server() {
-
+    function startWs() {
         var conf = gerServerConfig(opts);
-
-        var server = require('edp-webserver');
-
-        server.start(conf);
-
+        require('edp-webserver').start(conf);
     }
-
-
 }
+
 
 /**
  * 获取webserver 配置
