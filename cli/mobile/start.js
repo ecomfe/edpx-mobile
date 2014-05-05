@@ -13,7 +13,7 @@ var spawn = require( '../../lib/util/spawn' );
 
 /**
  * 命令行配置项
- * 
+ *
  * @inner
  * @type {Object}
  */
@@ -21,7 +21,7 @@ var cli = {};
 
 /**
  * 命令描述信息
- * 
+ *
  * @type {string}
  */
 cli.description = '启动调试';
@@ -39,14 +39,14 @@ cli.options = [
 
 /**
  * 模块执行入口
- * 
+ *
  * @param {Array.<string>} args 命令行参数
  * @param {Object.<string, string>} opts 命令可选参数
  */
 cli.main = function ( args, opts ) {
 
     // 多命令 使用默认配置
-    
+
     var cmds = ['server', 'watch'];
     var userCmds = cmds.filter(function (cmd) {
         return args.indexOf(cmd) > -1;
@@ -59,13 +59,13 @@ cli.main = function ( args, opts ) {
     }
 
     // 单命令 分别处理
-    
+
     var cmd = args[0];
     var argv = args.slice(1);
 
     if (cmd === 'server') {
         startServer(argv, opts);
-    } 
+    }
     else if (cmd === 'watch') {
         spawn('edp', args);
     }
@@ -74,7 +74,7 @@ cli.main = function ( args, opts ) {
 
 /**
  * 启动server
- * 
+ *
  * @param {Array.<string>} args 命令行参数
  * @param {Object.<string, string>} opts 命令可选参数
  */
@@ -88,7 +88,7 @@ function startServer(args, opts) {
         startWs,
         function () {
             require('edp-core').pkg.install(pkg).then(
-                startWs, 
+                startWs,
                 function() {
                     log.error(pkg + '安装失败, 请重试或手动安装：\n npm install -g '+ pkg);
                 }
@@ -108,7 +108,7 @@ function startServer(args, opts) {
 
 /**
  * 获取webserver 配置
- * 
+ *
  * @param {Object} opts cli配置
  * @return {Object}
  */
@@ -144,7 +144,7 @@ function gerServerConfig(opts) {
 
 /**
  * 获取扩展资源处理器
- * 
+ *
  * @param {string} resPath 资源目录路径
  * @return {Object}
  */
@@ -162,7 +162,7 @@ function getExtraResource( resPath ) {
 
 /**
  * 加载配置文件
- * 
+ *
  * @inner
  * @param {string=} confFile 配置文件路径
  * @return {Object}
@@ -198,7 +198,7 @@ function loadConf( confFile ) {
 
 /**
  * 命令行配置项
- * 
+ *
  * @type {Object}
  */
 exports.cli = cli;
