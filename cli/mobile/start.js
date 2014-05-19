@@ -53,9 +53,7 @@ cli.main = function ( args, opts ) {
     }).length;
 
     if( userCmds > 1 || userCmds === 0 ) {
-        startServer([], opts);
-        spawn('edp', ['watch']);
-        return;
+        return startServer([], opts) && spawn('edp', ['watch']);
     }
 
     // 单命令 分别处理
@@ -161,6 +159,22 @@ function getExtraResource( resPath ) {
 }
 
 /**
+ * require with try catch
+ *
+ * @param  {string} mod modname
+ * @return {any}     mod
+ */
+function requireSafely(mod) {
+    try {
+        return require(mod);
+    }
+    catch (e) {
+        log.error(e);
+        return;
+    }
+}
+
+/**
  * 加载配置文件
  *
  * @inner
@@ -175,7 +189,7 @@ function loadConf( confFile ) {
     if ( confFile ) {
         confFile = path.resolve( cwd, confFile );
         if ( fs.existsSync( confFile ) ) {
-            return require( confFile );
+            return requireSafely( confFile );
         }
 
         return null;
@@ -187,7 +201,7 @@ function loadConf( confFile ) {
         dir = parentDir;
         confFile = path.resolve( dir, DEFAULT_CONF_FILE );
         if ( fs.existsSync( confFile ) ) {
-            return require( confFile );
+            return requireSafely( confFile );
         }
 
         parentDir = path.resolve( dir, '..' );
@@ -195,6 +209,7 @@ function loadConf( confFile ) {
 
     return require( 'edp-webserver' ).getDefaultConfig();
 }
+
 
 /**
  * 命令行配置项
