@@ -53,7 +53,10 @@ cli.main = function ( args, opts ) {
     }).length;
 
     if( userCmds > 1 || userCmds === 0 ) {
-        return startServer([], opts) && spawn('edp', ['watch']);
+        startServer([], opts);
+        spawn('edp', ['watch']);
+
+        return;
     }
 
     // 单命令 分别处理
