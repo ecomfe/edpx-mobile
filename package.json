@@ -24,12 +24,12 @@
   ],
   "dependencies": {
     "edp-config": "^1.0.2",
-    "edp-core": "~1.0.25",
-    "edp-package": "^0.4.15",
-    "edp-project": "~0.5.1",
-    "edp-webserver": "^1.0.8",
-    "saber-boilerplate": "^0.1.0",
-    "mkdirp": "^0.4.0",
+    "edp-core": "~1.0.27",
+    "edp-package": "^0.4.17",
+    "edp-project": "^0.5.3",
+    "edp-webserver": "^1.0.12",
+    "saber-boilerplate": "^0.1.1",
+    "mkdirp": "^0.5.0",
     "sprintf": "^0.1.3"
   },
   "bin": {
