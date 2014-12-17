@@ -4,12 +4,12 @@
  *         junmer(junmer@foxmail.com)
  */
 
-var path = require( 'path' );
-var fs = require( 'fs' );
+var path = require('path');
+var fs = require('fs');
 
-var extend = require( 'edp-core' ).util.extend;
-var log = require( 'edp-core' ).log;
-var spawn = require( '../../lib/util/spawn' );
+var extend = require('edp-core').util.extend;
+var log = require('edp-core').log;
+var spawn = require('../../lib/util/spawn');
 
 /**
  * 命令行配置项
@@ -43,7 +43,7 @@ cli.options = [
  * @param {Array.<string>} args 命令行参数
  * @param {Object.<string, string>} opts 命令可选参数
  */
-cli.main = function ( args, opts ) {
+cli.main = function (args, opts) {
 
     // 多命令 使用默认配置
 
@@ -52,7 +52,7 @@ cli.main = function ( args, opts ) {
         return args.indexOf(cmd) > -1;
     }).length;
 
-    if( userCmds > 1 || userCmds === 0 ) {
+    if (userCmds > 1 || userCmds === 0) {
         startServer([], opts);
         spawn('edp', ['watch']);
 
@@ -81,7 +81,7 @@ cli.main = function ( args, opts ) {
  */
 function startServer(args, opts) {
 
-    var isInstalled = require( '../../lib/util/isInstalled' );
+    var isInstalled = require('../../lib/util/isInstalled');
 
     var pkg = 'weinre';
 
@@ -90,12 +90,12 @@ function startServer(args, opts) {
         function () {
             require('edp-core').pkg.install(pkg).then(
                 startWs,
-                function() {
-                    log.error(pkg + '安装失败, 请重试或手动安装：\n npm install -g '+ pkg);
+                function () {
+                    log.error(pkg + '安装失败, 请重试或手动安装：\n npm install -g ' + pkg);
                 }
             );
         }
-    );
+   );
 
     /**
      * 开始
@@ -119,25 +119,25 @@ function gerServerConfig(opts) {
     var docRoot = opts[ 'document-root' ];
     var conf = opts.config;
 
-    conf = loadConf( conf );
+    conf = loadConf(conf);
 
-    if ( !conf ) {
-        log.error( 'Cannot load server config.' );
+    if (!conf) {
+        log.error('Cannot load server config.');
         return;
     }
 
-    if ( docRoot ) {
-        conf.documentRoot = path.resolve( process.cwd(), docRoot );
+    if (docRoot) {
+        conf.documentRoot = path.resolve(process.cwd(), docRoot);
     }
 
-    if ( port ) {
+    if (port) {
         conf.port = port;
     }
 
     // 注入扩展资源处理器
-    if ( conf.injectResource ) {
-        var resPath = path.resolve( __dirname, '../../lib/server' );
-        conf.injectResource( getExtraResource( resPath ) );
+    if (conf.injectResource) {
+        var resPath = path.resolve(__dirname, '../../lib/server');
+        conf.injectResource(getExtraResource(resPath));
     }
 
     return conf;
@@ -149,13 +149,13 @@ function gerServerConfig(opts) {
  * @param {string} resPath 资源目录路径
  * @return {Object}
  */
-function getExtraResource( resPath ) {
-    var files = fs.readdirSync( resPath );
+function getExtraResource(resPath) {
+    var files = fs.readdirSync(resPath);
     var res = {};
 
-    files.forEach( function( file ) {
-        var filePath = path.resolve( resPath, file );
-        extend( res, require( filePath ) );
+    files.forEach(function (file) {
+        var filePath = path.resolve(resPath, file);
+        extend(res, require(filePath));
     });
 
     return res;
@@ -184,15 +184,15 @@ function requireSafely(mod) {
  * @param {string=} confFile 配置文件路径
  * @return {Object}
  */
-function loadConf( confFile ) {
+function loadConf(confFile) {
     var cwd = process.cwd();
 
     var DEFAULT_CONF_FILE = 'edp-webserver-config.js';
 
-    if ( confFile ) {
-        confFile = path.resolve( cwd, confFile );
-        if ( fs.existsSync( confFile ) ) {
-            return requireSafely( confFile );
+    if (confFile) {
+        confFile = path.resolve(cwd, confFile);
+        if (fs.existsSync(confFile)) {
+            return requireSafely(confFile);
         }
 
         return null;
@@ -202,15 +202,15 @@ function loadConf( confFile ) {
     var parentDir = cwd;
     do {
         dir = parentDir;
-        confFile = path.resolve( dir, DEFAULT_CONF_FILE );
-        if ( fs.existsSync( confFile ) ) {
-            return requireSafely( confFile );
+        confFile = path.resolve(dir, DEFAULT_CONF_FILE);
+        if (fs.existsSync(confFile)) {
+            return requireSafely(confFile);
         }
 
-        parentDir = path.resolve( dir, '..' );
-    } while ( parentDir != dir );
+        parentDir = path.resolve(dir, '..');
+    } while (parentDir !== dir);
 
-    return require( 'edp-webserver' ).getDefaultConfig();
+    return require('edp-webserver').getDefaultConfig();
 }
 
 

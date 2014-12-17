@@ -50,7 +50,7 @@ cli.main = function (args, opts) {
         themeName = opts['theme'];
     }
     else if (opts['theme']) {
-        log.warn('Current project\'s scheme is ' + util.colorize(theme, 'success') + ', ignore `--theme`');
+        log.warn('Current project\'s scheme is ' + util.colorize(themeName, 'success') + ', ignore `--theme`');
     }
 
     if (!themeName) {
