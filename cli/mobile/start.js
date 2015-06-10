@@ -116,7 +116,7 @@ function startServer(args, opts) {
 function gerServerConfig(opts) {
 
     var port = opts.port;
-    var docRoot = opts[ 'document-root' ];
+    var docRoot = opts['document-root'];
     var conf = opts.config;
 
     conf = loadConf(conf);

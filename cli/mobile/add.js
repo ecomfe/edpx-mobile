@@ -47,9 +47,9 @@ cli.main = function (args, opts) {
     var themeName = metadata.get('theme');
 
     if (!themeName) {
-        themeName = opts['theme'];
+        themeName = opts.theme;
     }
-    else if (opts['theme']) {
+    else if (opts.theme) {
         log.warn('Current project\'s scheme is ' + util.colorize(themeName, 'success') + ', ignore `--theme`');
     }
 
