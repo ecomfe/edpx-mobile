@@ -55,8 +55,6 @@ cli.main = function (args, opts) {
     if (userCmds > 1 || userCmds === 0) {
         startServer([], opts);
         spawn('edp', ['watch']);
-
-        return;
     }
 
     // 单命令 分别处理
@@ -103,6 +101,14 @@ function startServer(args, opts) {
     function startWs() {
         var conf = gerServerConfig(opts);
         require('edp-webserver').start(conf);
+
+        var theme = require('../../lib/metadata').get('theme');
+        // 如果是同构的项目需要再启动node
+        if (theme === 'iso') {
+            // TODO
+            // 考虑使用能热reload的方式启动测试服务器
+            spawn('node', ['app.js']);
+        }
     }
 }
 
