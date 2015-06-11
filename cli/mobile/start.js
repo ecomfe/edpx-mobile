@@ -104,7 +104,7 @@ function startServer(args, opts) {
 
         // 如果是同构的项目需要再启动node
         if (isISO) {
-            spawn('nodemon', ['app.js', '-w', 'lib', '-w', 'app.js', '-w', 'config']);
+            spawn('nodemon', ['app.js', '-w', 'lib', '-w', 'app.js', '-w', 'config', '-e', 'js,tpl,json']);
         }
     }
 
