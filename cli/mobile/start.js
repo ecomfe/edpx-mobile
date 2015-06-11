@@ -24,7 +24,7 @@ var cli = {};
  *
  * @type {string}
  */
-cli.description = '启动调试';
+cli.description = '启动调试服务器';
 
 /**
  * 命令选项信息
