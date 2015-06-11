@@ -9,7 +9,11 @@ var fs = require('fs');
 
 var extend = require('edp-core').util.extend;
 var log = require('edp-core').log;
+var pkg = require('edp-core').pkg;
+var Deferred = require('edp-core').Deferred;
 var spawn = require('../../lib/util/spawn');
+
+var isInstalled = require('../../lib/util/isInstalled');
 
 /**
  * 命令行配置项
@@ -71,6 +75,17 @@ cli.main = function (args, opts) {
 
 };
 
+function importPackage(name) {
+    return isInstalled(name)
+        // 如果没有安装就尝试安装
+        .then(null, function () {
+            return pkg.install(name);
+        })
+        .then(null, function () {
+            return Deferred.rejected(name);
+        });
+}
+
 /**
  * 启动server
  *
@@ -78,38 +93,33 @@ cli.main = function (args, opts) {
  * @param {Object.<string, string>} opts 命令可选参数
  */
 function startServer(args, opts) {
-
-    var isInstalled = require('../../lib/util/isInstalled');
-
-    var pkg = 'weinre';
-
-    isInstalled(pkg).then(
-        startWs,
-        function () {
-            require('edp-core').pkg.install(pkg).then(
-                startWs,
-                function () {
-                    log.error(pkg + '安装失败, 请重试或手动安装：\n npm install -g ' + pkg);
-                }
-            );
-        }
-   );
-
+    var theme = require('../../lib/metadata').get('theme');
+    var isISO = theme === 'iso';
     /**
-     * 开始
+     * 开启server
      */
     function startWs() {
         var conf = gerServerConfig(opts);
         require('edp-webserver').start(conf);
 
-        var theme = require('../../lib/metadata').get('theme');
         // 如果是同构的项目需要再启动node
-        if (theme === 'iso') {
-            // TODO
-            // 考虑使用能热reload的方式启动测试服务器
-            spawn('node', ['app.js']);
+        if (isISO) {
+            spawn('nodemon', ['app.js', '-w', 'lib', '-w', 'app.js', '-w', 'config']);
         }
     }
+
+    importPackage('weinre')
+        .then(function () {
+            if (isISO) {
+                return importPackage('nodemon');
+            }
+        })
+        .then(
+            startWs,
+            function (name) {
+                log.error('调试服务器启动失败, 请重试或手动安装依赖：\n npm install -g ' + name);
+            }
+        );
 }
 
 
