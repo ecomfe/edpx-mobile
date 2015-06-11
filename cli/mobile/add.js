@@ -70,7 +70,22 @@ cli.main = function (args, opts) {
 
     args.unshift('add');
 
-    theme.exec.apply(theme, args);
+    theme.exec.apply(theme, args)
+        .then(
+            function () {
+                // edp-core的Deferred不兼容Promise/A+规范
+                // Deferred.all返回的是多个参数而非Promise/A+的规定的一个数组
+                var files = Array.prototype.slice.call(arguments);
+                files.forEach(function (file) {
+                    log.info(file);
+                });
+                log.info('add success');
+            },
+            function (reason) {
+                log.error(reason);
+                log.error('add fail ...');
+            }
+        );
 };
 
 // 导出命令
