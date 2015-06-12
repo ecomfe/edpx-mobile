@@ -79,6 +79,7 @@ function importPackage(name) {
     return isInstalled(name)
         // 如果没有安装就尝试安装
         .then(null, function () {
+            log.info('try to install ' + name + ', please wait ...')
             return pkg.install(name);
         })
         .then(null, function () {
@@ -99,11 +100,13 @@ function startServer(args, opts) {
      * 开启server
      */
     function startWs() {
+        log.info('start web server ...')
         var conf = gerServerConfig(opts);
         require('edp-webserver').start(conf);
 
         // 如果是同构的项目需要再启动node
         if (isISO) {
+            log.info('start node server ...')
             spawn('nodemon', ['app.js', '-w', 'lib', '-w', 'app.js', '-w', 'config', '-e', 'js,tpl,json']);
         }
     }
@@ -117,7 +120,7 @@ function startServer(args, opts) {
         .then(
             startWs,
             function (name) {
-                log.error('调试服务器启动失败, 请重试或手动安装依赖：\n npm install -g ' + name);
+                log.error('start server fail, please install dependence by：\n npm install -g ' + name);
             }
         );
 }
