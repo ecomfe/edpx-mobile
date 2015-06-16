@@ -15,9 +15,9 @@ $ npm install -g edpx-mobile
 
 ## CLI
 
-### init <theme>
+### init &lt;theme&gt;
 
-初始化项目，主题 `theme` 有以下取值：
+初始化项目，会完成项目目录结构的初始化，导入所有依赖的模块并且生成基础代码。主题参数 `theme` 表明生成哪种类型的项目，有以下取值：
 
 * `spa` 单页应用
 * `iso` 同构应用
@@ -27,7 +27,7 @@ $ npm install -g edpx-mobile
 $ edp mobile init iso
 ```
 
-### add [type] <path> [file_name_prefix]
+### add [type] &lt;path&gt; [file_name_prefix]
 
 添加业务，会为 `path` （是以 `/` 开头的有效 URL 路径）指定的路径添加相应的 Presenter、View、Model、Template 与 Style 文件，比如：
 
@@ -35,7 +35,7 @@ $ edp mobile init iso
 $edp mobile add /
 ```
 
-会添加处理 `/` 路径的相关文件 并且以 `path` 为基础来命名文件，比如此时 Presenter 为 `index.js`，Model 为 `indexModel.js`
+会添加处理 `/` 路径的相关文件，并且以 `path` 为基础来命名文件，比如此时 Presenter 为 `index.js`，Model 为 `indexModel.js`
 
 也可以通过指定 `type` 来单独添加某一类文件，`type` 的有效取值如下：
 
@@ -45,7 +45,7 @@ $edp mobile add /
 * `template` 添加模版文件文件
 * `style` 添加样式文件
 
-还也可以使用 `file_name_prefix` 指定生成文件的文件名前缀，比如：
+还也可以使用 `file_name_prefix` 指定生成的文件名前缀，比如：
 
 ```sh
 $ edp mobile add /detail/:id product/detail
@@ -53,7 +53,7 @@ $ edp mobile add /detail/:id product/detail
 
 以上命令会生成处理 `/detail/:id` 路径的相关文件并且以 `file_name_prefix` 指定的名称作为文件名前缀，比如此时 Presenter 为 `product/detail.js`，Model 为 `product/detailModel.js`
 
-生成文件的具体路径由当前项目的主题决定，如果是 `spa` 单页面应用，则所有生成的文件都在 `src` 目录下，而如果是 `iso` 同构项目则 `lib` 与 `src` 都会新增文件，所以在指定 `file_name_prefix` 时不需要写 `src` 或者 `lib` 文件夹名
+生成文件的具体路径由当前项目的主题决定，如果是 `spa` 单页面应用，则所有生成的文件都在 `src` 目录下，而如果是 `iso` 同构项目则 `lib` 与 `src` 文件夹下都会新增文件，所以在指定 `file_name_prefix` 时不需要写 `src` 或者 `lib` 文件夹名
 
 ### start
 
