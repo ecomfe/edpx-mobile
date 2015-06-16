@@ -1,4 +1,4 @@
-edpx-mobile [![Dependencies Status](https://david-dm.org/ecomfe/edpx-mobile.png)](https://david-dm.org/ecomfe/edpx-mobile)
+edpx-mobile [![NPM version](https://img.shields.io/npm/v/edpx-mobile.svg?style=flat-square)](https://npmjs.org/package/rider) [![License](https://img.shields.io/npm/l/edpx-mobile.svg?style=flat-square)](./LICENSE) [![EFE Mobile Team](https://img.shields.io/badge/EFE-Mobile_Team-blue.svg?style=flat-square)](http://efe.baidu.com)
 ===
 
 EDP extension for Mobile project.
