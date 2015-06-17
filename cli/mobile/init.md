@@ -11,3 +11,4 @@
 目前支持的`theme`如下：
 
 * `spa` `Single Page Application`
+* `iso` `Isomorphic Application`
