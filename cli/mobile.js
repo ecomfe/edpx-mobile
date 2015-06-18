@@ -3,6 +3,40 @@
  * @author treelite(c.xinle@gmail.com)
  */
 
+var fs = require('fs');
+var path = require('path');
+var sprintf = require('sprintf');
+var util = require('edp-core').util;
+
+/**
+ * 显示命令
+ */
+function echoCommand(file) {
+    var cli = require(file).cli;
+    console.log(
+        sprintf(
+            '  %-20s %s',
+            util.colorize(path.basename(file), 'success'),
+            cli.description
+        )
+    );
+}
+
+/**
+ * 显示所有命令
+ */
+function lsCommand() {
+    console.log('Builtin commands:');
+    var dir = path.resolve(__dirname, 'mobile');
+    var files = fs.readdirSync(dir);
+    files.forEach(function (file) {
+        file = path.resolve(dir, file);
+        if (path.extname(file) === '.js') {
+            echoCommand(file.replace(/\.[^.]*$/, ''));
+        }
+    });
+}
+
 /**
  * 命令行配置相
  *
@@ -29,6 +63,8 @@ cli.main = function () {
     var log = core.log;
     var util = core.util;
     var theme = metadata.get('theme');
+
+    lsCommand();
 
     if (!theme) {
         log.info('not in mobile project dir');

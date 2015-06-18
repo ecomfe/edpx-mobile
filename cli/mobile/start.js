@@ -4,12 +4,16 @@
  *         junmer(junmer@foxmail.com)
  */
 
-var path = require( 'path' );
-var fs = require( 'fs' );
+var path = require('path');
+var fs = require('fs');
 
-var extend = require( 'edp-core' ).util.extend;
-var log = require( 'edp-core' ).log;
-var spawn = require( '../../lib/util/spawn' );
+var extend = require('edp-core').util.extend;
+var log = require('edp-core').log;
+var pkg = require('edp-core').pkg;
+var Deferred = require('edp-core').Deferred;
+var spawn = require('../../lib/util/spawn');
+
+var isInstalled = require('../../lib/util/isInstalled');
 
 /**
  * 命令行配置项
@@ -24,7 +28,7 @@ var cli = {};
  *
  * @type {string}
  */
-cli.description = '启动调试';
+cli.description = '启动调试服务器';
 
 /**
  * 命令选项信息
@@ -43,7 +47,7 @@ cli.options = [
  * @param {Array.<string>} args 命令行参数
  * @param {Object.<string, string>} opts 命令可选参数
  */
-cli.main = function ( args, opts ) {
+cli.main = function (args, opts) {
 
     // 多命令 使用默认配置
 
@@ -52,11 +56,9 @@ cli.main = function ( args, opts ) {
         return args.indexOf(cmd) > -1;
     }).length;
 
-    if( userCmds > 1 || userCmds === 0 ) {
+    if (userCmds > 1 || userCmds === 0) {
         startServer([], opts);
         spawn('edp', ['watch']);
-
-        return;
     }
 
     // 单命令 分别处理
@@ -73,6 +75,18 @@ cli.main = function ( args, opts ) {
 
 };
 
+function importPackage(name) {
+    return isInstalled(name)
+        // 如果没有安装就尝试安装
+        .then(null, function () {
+            log.info('try to install ' + name + ', please wait ...')
+            return pkg.install(name);
+        })
+        .then(null, function () {
+            return Deferred.rejected(name);
+        });
+}
+
 /**
  * 启动server
  *
@@ -80,30 +94,35 @@ cli.main = function ( args, opts ) {
  * @param {Object.<string, string>} opts 命令可选参数
  */
 function startServer(args, opts) {
-
-    var isInstalled = require( '../../lib/util/isInstalled' );
-
-    var pkg = 'weinre';
-
-    isInstalled(pkg).then(
-        startWs,
-        function () {
-            require('edp-core').pkg.install(pkg).then(
-                startWs,
-                function() {
-                    log.error(pkg + '安装失败, 请重试或手动安装：\n npm install -g '+ pkg);
-                }
-            );
-        }
-    );
-
+    var theme = require('../../lib/metadata').get('theme');
+    var isISO = theme === 'iso';
     /**
-     * 开始
+     * 开启server
      */
     function startWs() {
+        log.info('start web server ...')
         var conf = gerServerConfig(opts);
         require('edp-webserver').start(conf);
+
+        // 如果是同构的项目需要再启动node
+        if (isISO) {
+            log.info('start node server ...')
+            spawn('nodemon', ['app.js', '-w', 'lib', '-w', 'app.js', '-w', 'config', '-e', 'js,tpl,json']);
+        }
     }
+
+    importPackage('weinre')
+        .then(function () {
+            if (isISO) {
+                return importPackage('nodemon');
+            }
+        })
+        .then(
+            startWs,
+            function (name) {
+                log.error('start server fail, please install dependence by：\n npm install -g ' + name);
+            }
+        );
 }
 
 
@@ -116,28 +135,28 @@ function startServer(args, opts) {
 function gerServerConfig(opts) {
 
     var port = opts.port;
-    var docRoot = opts[ 'document-root' ];
+    var docRoot = opts['document-root'];
     var conf = opts.config;
 
-    conf = loadConf( conf );
+    conf = loadConf(conf);
 
-    if ( !conf ) {
-        log.error( 'Cannot load server config.' );
+    if (!conf) {
+        log.error('Cannot load server config.');
         return;
     }
 
-    if ( docRoot ) {
-        conf.documentRoot = path.resolve( process.cwd(), docRoot );
+    if (docRoot) {
+        conf.documentRoot = path.resolve(process.cwd(), docRoot);
     }
 
-    if ( port ) {
+    if (port) {
         conf.port = port;
     }
 
     // 注入扩展资源处理器
-    if ( conf.injectResource ) {
-        var resPath = path.resolve( __dirname, '../../lib/server' );
-        conf.injectResource( getExtraResource( resPath ) );
+    if (conf.injectResource) {
+        var resPath = path.resolve(__dirname, '../../lib/server');
+        conf.injectResource(getExtraResource(resPath));
     }
 
     return conf;
@@ -149,13 +168,13 @@ function gerServerConfig(opts) {
  * @param {string} resPath 资源目录路径
  * @return {Object}
  */
-function getExtraResource( resPath ) {
-    var files = fs.readdirSync( resPath );
+function getExtraResource(resPath) {
+    var files = fs.readdirSync(resPath);
     var res = {};
 
-    files.forEach( function( file ) {
-        var filePath = path.resolve( resPath, file );
-        extend( res, require( filePath ) );
+    files.forEach(function (file) {
+        var filePath = path.resolve(resPath, file);
+        extend(res, require(filePath));
     });
 
     return res;
@@ -184,15 +203,15 @@ function requireSafely(mod) {
  * @param {string=} confFile 配置文件路径
  * @return {Object}
  */
-function loadConf( confFile ) {
+function loadConf(confFile) {
     var cwd = process.cwd();
 
     var DEFAULT_CONF_FILE = 'edp-webserver-config.js';
 
-    if ( confFile ) {
-        confFile = path.resolve( cwd, confFile );
-        if ( fs.existsSync( confFile ) ) {
-            return requireSafely( confFile );
+    if (confFile) {
+        confFile = path.resolve(cwd, confFile);
+        if (fs.existsSync(confFile)) {
+            return requireSafely(confFile);
         }
 
         return null;
@@ -202,15 +221,15 @@ function loadConf( confFile ) {
     var parentDir = cwd;
     do {
         dir = parentDir;
-        confFile = path.resolve( dir, DEFAULT_CONF_FILE );
-        if ( fs.existsSync( confFile ) ) {
-            return requireSafely( confFile );
+        confFile = path.resolve(dir, DEFAULT_CONF_FILE);
+        if (fs.existsSync(confFile)) {
+            return requireSafely(confFile);
         }
 
-        parentDir = path.resolve( dir, '..' );
-    } while ( parentDir != dir );
+        parentDir = path.resolve(dir, '..');
+    } while (parentDir !== dir);
 
-    return require( 'edp-webserver' ).getDefaultConfig();
+    return require('edp-webserver').getDefaultConfig();
 }
 
 

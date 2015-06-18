@@ -61,9 +61,16 @@ cli.main = function (args) {
 
         // mobile project init
         metadata.set('theme', theme.name);
-        theme.exec('init', info, function () {
-            log.info('init mobile project done');
-        });
+        // execute init cmd
+        theme.exec('init', info)
+            .then(
+                function () {
+                    log.info('init mobile project done');
+                },
+                function (reason) {
+                    log.error('init fail: ' + reason);
+                }
+            );
     }
     catch (e) {
         log.error(LOG_PERFIX + e.message);
