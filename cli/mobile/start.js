@@ -79,7 +79,7 @@ function importPackage(name) {
     return isInstalled(name)
         // 如果没有安装就尝试安装
         .then(null, function () {
-            log.info('try to install ' + name + ', please wait ...')
+            log.info('try to install ' + name + ', please wait ...');
             return pkg.install(name);
         })
         .then(null, function () {
@@ -96,17 +96,18 @@ function importPackage(name) {
 function startServer(args, opts) {
     var theme = require('../../lib/metadata').get('theme');
     var isISO = theme === 'iso';
+
     /**
      * 开启server
      */
     function startWs() {
-        log.info('start web server ...')
+        log.info('start web server ...');
         var conf = gerServerConfig(opts);
         require('edp-webserver').start(conf);
 
         // 如果是同构的项目需要再启动node
         if (isISO) {
-            log.info('start node server ...')
+            log.info('start node server ...');
             spawn('nodemon', ['app.js', '-w', 'lib', '-w', 'app.js', '-w', 'config', '-e', 'js,tpl,json']);
         }
     }

@@ -8,8 +8,12 @@ var path = require('path');
 var sprintf = require('sprintf');
 var util = require('edp-core').util;
 
+/* eslint-disable no-console */
+
 /**
  * 显示命令
+ *
+ * @param {string} file 命令文件路径
  */
 function echoCommand(file) {
     var cli = require(file).cli;
@@ -36,6 +40,8 @@ function lsCommand() {
         }
     });
 }
+
+/* eslint-enable no-console */
 
 /**
  * 命令行配置相
