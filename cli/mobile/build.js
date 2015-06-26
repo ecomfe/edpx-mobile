@@ -26,7 +26,7 @@ cli.description = '项目构建';
 /**
  * 命令选项
  */
-cli.options = ['force'];
+cli.options = ['force', 'stage:', 'config:'];
 
 /**
  * 命令入口
@@ -39,11 +39,16 @@ cli.main = function (args, opts) {
     var theme = themes.get(metadata.get('theme'));
 
     if (!theme) {
-        log.error('Not in project dir');
+        log.error('not in project dir');
+        process.exit(1);
         return;
     }
 
-    theme.exec('build', opts);
+    theme
+        .exec('build', opts)
+        .fail(function () {
+            process.exit(1);
+        });
 };
 
 // 导出命令
