@@ -89,7 +89,6 @@ $ edp mobile start
 
 * **文件拷贝** 后端代码不需要编译，只需要进行简单的文件拷贝就可以，默认会将 `app.js`，`lib` 与 `node_modules` 拷贝到输出目录
 * **配置文件夹拷贝** 会根据命令中的 `--stage` 参数与构建配置信息中设置的 `config` 来选择正确的配置文件夹将其拷贝到输出目录
-* **路由文件处理** 会将路由配置信息中以字符串形式引用的路径处理对象改为使用 `require` 强依赖，提供运行速度
 * **主文件处理** 将前端编译完成的主页面移动到后端的输出目录中
 
 相关的构建配置信息也在 `edp-build-config.js` 中，默认的配置如下：
@@ -102,8 +101,6 @@ exports.rebas = {
     files: ['app.js', 'lib', 'node_modules'],
     // 指定主文件
     index: 'index.html',
-    // 指定路由配置文件
-    route: 'lib/config.js',
     // 指定配置文件夹
     configDir: 'config'
 };
