@@ -108,4 +108,4 @@ exports.rebas = {
 
 ## More
 
-`edpx-mobile` 目前只提供了 `init`、`add`、 `start` 与 `build` 三条命令，并不能独立的完全覆盖开发的方方面面，剩下的部分我们认为 `edp` 已经完成得很贴心了，所以就请直接使用 `edp` 提供的相关功能，如果感觉某些 `edp` 或者 `edpx-mobile` 提供的功能不好用、不符合预期，请[告诉我们](https://github.com/ecomfe/edpx-mobile/issues/new)或者直接给我们提交 PR ～
+`edpx-mobile` 目前只提供了 `init`、`add`、 `start` 与 `build` 四条命令，并不能独立的完全覆盖开发的方方面面，剩下的部分我们认为 `edp` 已经完成得很贴心了，所以如果还有其它需求就请直接使用 `edp` 提供的相关功能，如果感觉某些 `edp` 或者 `edpx-mobile` 提供的功能不好用、不符合预期，请[告诉我们](https://github.com/ecomfe/edpx-mobile/issues/new)或者直接给我们提交 PR ～
