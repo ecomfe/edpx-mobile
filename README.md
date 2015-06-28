@@ -67,6 +67,45 @@ $ edp mobile start
 
 自测服务器的相关配置在 `edp-webserver-config.js` 中，详细配置信息[请参考这里](https://github.com/ecomfe/edp/wiki/WebServer)。在自测服务器中我们集成了 `Weinre` 与 `livereload` 功能，方便移动端的调试，并且对于 `iso` 同构的项目默认启动了代码监控与自动重启，在修改了 JavaScript、模版文件或者 JSON 配置信息后都无需手动重启服务～
 
+### build [--config=<configFile>] [--stage=<stage>] [--force]
+
+构建项目
+
+* **--config** 指定构建配置文件
+* **--stage** 指定Processors的组合
+* **--force** 强制构建。如果输出目录存在时，指定此选项，将强制删除现有的输出目录，并重新创建空目录
+
+构建时会根据项目主题来进行相应的构建操作
+
+#### SPA
+
+单页应用直接使用 [edp-build](https://github.com/ecomfe/edp-build) 进行前端代码的构建，相关的配置在 `edp-build-config.js` 中，具体请参考 [edp build 说明](https://github.com/ecomfe/edp/wiki/Build)
+
+#### ISO
+
+同构项目分成前端构建与后端构建两部分，对于前端构建与 [SPA](#spa) 主题的项目构建一样，直接使用 [edp-build](https://github.com/ecomfe/edp-build) 进行处理。
+
+后端构建主要进行以下操作：
+
+* **文件拷贝** 后端代码不需要编译，只需要进行简单的文件拷贝就可以，默认会将 `app.js`，`lib` 与 `node_modules` 拷贝到输出目录
+* **配置文件夹拷贝** 会根据命令中的 `--stage` 参数与构建配置信息中设置的 `config` 来选择正确的配置文件夹将其拷贝到输出目录
+* **主文件处理** 将前端编译完成的主页面移动到后端的输出目录中
+
+相关的构建配置信息也在 `edp-build-config.js` 中，默认的配置如下：
+
+```js
+exports.rebas = {
+    // 指定输出目录
+    output: 'output/node',
+    // 指定需要直接拷贝到输出目录的文件
+    files: ['app.js', 'lib', 'node_modules'],
+    // 指定主文件
+    index: 'index.html',
+    // 指定配置文件夹
+    configDir: 'config'
+};
+```
+
 ## More
 
-`edpx-mobile` 目前只提供了 `init`、`add` 与 `start` 三条命令，并不能独立的完全覆盖开发的方方面面，剩下的部分我们认为 `edp` 已经完成得很贴心了，所以就请直接使用 `edp` 提供的相关功能，比如说项目构建 `edp build`，具体请参考详细的 [edp 文档](https://github.com/ecomfe/edp/wiki)。当然，如果感觉某些 `edp` 或者 `edpx-mobile` 提供的功能不好用、不符合预期，请[告诉我们](https://github.com/ecomfe/edpx-mobile/issues/new)或者直接给我们提交 PR ～
+`edpx-mobile` 目前只提供了 `init`、`add`、 `start` 与 `build` 四条命令，并不能独立的完全覆盖开发的方方面面，剩下的部分我们认为 `edp` 已经完成得很贴心了，所以如果还有其它需求就请直接使用 `edp` 提供的相关功能，如果感觉某些 `edp` 或者 `edpx-mobile` 提供的功能不好用、不符合预期，请[告诉我们](https://github.com/ecomfe/edpx-mobile/issues/new)或者直接给我们提交 PR ～

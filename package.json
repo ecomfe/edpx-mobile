@@ -1,7 +1,7 @@
 {
   "name": "edpx-mobile",
   "description": "EDP extension for Mobile project.",
-  "version": "1.6.0",
+  "version": "1.8.0",
   "maintainers": [
     {
       "name": "junmer",
@@ -25,7 +25,7 @@
     "edp-project": "~0.6.2",
     "edp-webserver": "~1.2.3",
     "mkdirp": "~0.5.1",
-    "saber-boilerplate": "^1.6.0",
+    "saber-boilerplate": "^1.8.0",
     "sprintf": "~0.1.5"
   },
   "bin": {
