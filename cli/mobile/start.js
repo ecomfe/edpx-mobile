@@ -38,7 +38,8 @@ cli.description = '启动调试服务器';
 cli.options = [
     'port:',
     'document-root:',
-    'config:'
+    'config:',
+    'stage:'
 ];
 
 /**
@@ -108,7 +109,17 @@ function startServer(args, opts) {
         // 如果是同构的项目需要再启动node
         if (isISO) {
             log.info('start node server ...');
-            spawn('nodemon', ['app.js', '-w', 'lib', '-w', 'app.js', '-w', 'config', '-e', 'js,tpl,json']);
+            var cmds = ['app.js'];
+            var options = ['-e', 'js,tpl,json', '-w', 'lib', '-w', 'app.js', '-w'];
+            // 指定配置目录
+            if (opts.stage) {
+                options.push('config-' + opts.stage);
+                cmds.push('config-' + opts.stage);
+            }
+            else {
+                options.push('config');
+            }
+            spawn('nodemon', cmds.concat(options));
         }
     }
 

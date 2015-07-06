@@ -6,6 +6,7 @@
     edpm start server [--port=portNo]
     edpm start server [--config=configFile]
     edpm start server [--document-root=documentRoot]
+    edpm start server [--stage=stageStr]
 
 ### Description
 
